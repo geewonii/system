@@ -1,0 +1,121 @@
+{
+  "name": "ant-design-pro",
+  "version": "2.1.1",
+  "description": "An out-of-box UI solution for enterprise applications",
+  "private": true,
+  "scripts": {
+    "presite": "node ./scripts/generateMock.js && cd functions && npm install",
+    "start": "cross-env APP_TYPE=site umi dev",
+    "start:no-mock": "cross-env MOCK=none umi dev",
+    "build": "umi build",
+    "site": "npm run presite && cross-env APP_TYPE=site npm run build && firebase deploy && npm run docker:push",
+    "analyze": "cross-env ANALYZE=1 umi build",
+    "lint:style": "stylelint \"src/**/*.less\" --syntax less",
+    "lint": "eslint --ext .js src mock tests && npm run lint:style",
+    "lint:fix": "eslint --fix --ext .js src mock tests && npm run lint:style",
+    "lint-staged": "lint-staged",
+    "lint-staged:js": "eslint --ext .js",
+    "tslint": "npm run tslint:fix",
+    "tslint:fix": "tslint --fix 'src/**/*.ts*'",
+    "test": "umi test",
+    "test:component": "umi test ./src/components",
+    "test:all": "node ./tests/run-tests.js",
+    "prettier": "prettier --write './src/**/*'",
+    "docker:dev": "docker-compose -f ./docker/docker-compose.dev.yml up",
+    "docker:build": "docker-compose -f ./docker/docker-compose.dev.yml build",
+    "docker-prod:dev": "docker-compose -f ./docker/docker-compose.yml up",
+    "docker-prod:build": "docker-compose -f ./docker/docker-compose.yml build",
+    "docker-hub:build": "docker build  -f Dockerfile.hub -t  ant-design-pro ./",
+    "docker:tag": "docker tag ant-design-pro chenshuai2144/ant-design-pro",
+    "docker:push": "npm run docker-hub:build && npm run docker:tag && docker push chenshuai2144/ant-design-pro"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.1.5",
+    "antd": "^3.10.8",
+    "bizcharts": "^3.3.0",
+    "bizcharts-plugin-slider": "^2.1.1-beta.1",
+    "classnames": "^2.2.6",
+    "dva": "^2.4.0",
+    "enquire-js": "^0.2.1", // css媒体查询库
+    "hash.js": "^1.1.5",
+    "lodash": "^4.17.10",
+    "lodash-decorators": "^6.0.0",
+    "memoize-one": "^4.0.0", // 只缓存一次计算结果
+    "moment": "^2.22.2",
+    "numeral": "^2.0.6", // 格式化数字
+    "nzh": "^1.0.3", // 阿拉伯转中文数字
+    "omit.js": "^1.0.0", // 排除某些指定属性并返回最新结果
+    "path-to-regexp": "^2.4.0", // url 正则匹配
+    "prop-types": "^15.5.10",
+    "qs": "^6.5.2", // 格式化的字符串转换
+    "rc-animate": "^2.4.4",
+    "react": "^16.5.1",
+    "react-container-query": "^0.11.0", // 组件级别的media query
+    "react-copy-to-clipboard": "^5.0.1", // 复制内容到剪贴板
+    "react-document-title": "^2.0.3", // 根据不同的路由改变文档的title
+    "react-dom": "^16.5.1",
+    "react-fittext": "^1.0.0", // 对文本大小自动调整
+    "react-router-dom": "^4.3.1" // 用于 DOM 绑定的 React Router
+  },
+  "devDependencies": {
+    "@antv/data-set": "^0.10.0", // babel对dataset数据结构处理
+    "@types/react": "^16.7.6",  //@types开头的包都是typeScript的声明文件
+    "@types/react-dom": "^16.0.9",
+    "antd-pro-merge-less": "^0.2.0",
+    "antd-theme-webpack-plugin": "^1.1.8",
+    "babel-eslint": "^10.0.1", // 一个Babel parser的包装器，这个包装器使得Babel parser可以和ESLint协调工作
+    "cross-env": "^5.1.1", // 解决NODE_ENV跨平台
+    "cross-port-killer": "^1.0.1", // 终止在Windows、Linux和Mac上的指定TCP端口上运行的进程
+    "enzyme": "^3.7.0", // 测试类库 
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb": "^17.0.0", // 项目中用的airbnb代码规范
+    "eslint-config-prettier": "^3.0.1", // 可关闭所有可能引起冲突的规则
+    "eslint-plugin-babel": "^5.3.0", // eslint-plugin-babel重新实现了有问题的规则，这样它们就不会给出错误的正误。
+    "eslint-plugin-compat": "^2.6.2", // 删除浏览器兼容性的代码
+    "eslint-plugin-import": "^2.14.0", // Airbnb标准必需。是用来校验 import 的，比如不能加 .js 后缀
+    "eslint-plugin-jsx-a11y": "^6.1.2", // a11y是accessibility（无障碍环境）的缩写，React会用到JSX，而且这个Airbnb标准必须要用到它，所以必须安装。
+    "eslint-plugin-markdown": "^1.0.0-beta.6", // 支持在markdown检测js语法
+    "eslint-plugin-react": "^7.11.1", // 使eslint 支持react
+    "gh-pages": "^2.0.1", // 将文件发布到github的gh-pages分支(或任何其他分支)。
+    "husky": "^1.1.2", // 在本地提交之前做 Lint。
+    "jest-puppeteer": "^3.5.1", // 端到端测试的 Node 库，包含使用Puppeteer编写集成测试所需的所有配置的Jest预设。
+    "lint-staged": "^8.0.4", // 可配置自动修复错误 or 自动格式化代码
+    "merge-umi-mock-data": "^0.0.3",
+    "mockjs": "^1.0.1-beta3",
+    "prettier": "1.15.2", // 代码格式化程序，通过解析代码并使用自己的规则(考虑到最大行长度)将其重新打印，并在必要时包装代码，保持一致风格。
+    "pro-download": "^1.0.1",
+    "stylelint": "^9.4.0",
+    "stylelint-config-prettier": "^4.0.0",
+    "stylelint-config-standard": "^18.0.0",
+    "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.10.0",
+    "tslint-react": "^3.6.0",
+    "umi": "^2.2.7",
+    "umi-plugin-ga": "^1.1.3",
+    "umi-plugin-react": "^1.2.0"
+  },
+  "optionalDependencies": {
+    "puppeteer": "^1.10.0" // Puppeteer是一个节点库，它提供了一个高级API在DevTools协议之上控制Chrome或者Chromium。在默认情况下运行无头的Chrome或者Chromium。
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,less}": [
+      "prettier --write",
+      "git add"
+    ],
+    "**/*.{js,jsx}": "npm run lint-staged:js",
+    "**/*.less": "stylelint --syntax less"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint-staged"
+    }
+  }
+}
